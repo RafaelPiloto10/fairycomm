@@ -2,9 +2,25 @@ const mongoose = require('mongoose');
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:<${process.env.DB_PASSWORD}>@herd-it-here-first.23sgz.azure.mongodb.net/<dbname>?retryWrites=true&w=majority`;
 
-mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then(console.log("Connected to database"))
+    .catch(err => {
+        console.log(err);
+    });
 
-const Cat = mongoose.model('Cat', { name: String });
+const User = new Schema({
+    name: String,
+    username: String,
+    telegram_id: Number,
+    date: Date
+});
 
-const kitty = new Cat({ name: 'Zildjian' });
-kitty.save().then(() => console.log('meow'));
+User.index({
+    name: "text",
+    username: "text",
+    telegram_id: "text"
+});
+
+let UserModel = mongoose.model("User", User);

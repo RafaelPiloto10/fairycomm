@@ -1,8 +1,9 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:<${process.env.DB_PASSWORD}>@herd-it-here-first.23sgz.azure.mongodb.net/<dbname>?retryWrites=true&w=majority`;
-
-mongoose.connect(uri, {
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@herd-it-here-first.23sgz.azure.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+const uri2 = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.ijjzb.azure.mongodb.net/${process.env.DB_NAME}>?retryWrites=true&w=majority`
+const Schema = mongoose.Schema;
+mongoose.connect(uri2, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(console.log("Connected to database"))
@@ -10,47 +11,53 @@ mongoose.connect(uri, {
         console.log(err);
     });
 
+
 const BnessSchema = new Schema({
     companyname: String,
-    industry: String,
     username: String,
     password: String,
+    email: String,
+    address: String,
+    city: String,
+    zip: String,
+    phone: String,
     catalog: [Schema.Types.Mixed],
     startdate: Date,
-});
-
-Bness.index({
-    companyname: "text",
-    industry: "text",
-    username: "text",
-    password: "text",
-    //catalog: "text", //not sure if correct
-    //startdate: "text",
 });
 
 let BModel = mongoose.model("Business", BnessSchema);
 
 
-function addBness(companyname, industry, username, password, catalog) {
-    BModel.find({
-        username: username
-    }, (err, res) => {
-        console.log(res);
-        if (res.length != 0) {
-            return false;
-        } else {
-            let newuser = new BModel({
-                companyname,
-                industry,
-                username,
-                password,
-                catalog,
-                startdate: new Date(),
-            });
-            console.log(`New user created: ${companyname}!`);
-            newuser.save();
-        }
+
+//  api.registerBusiness(username, password, business, email, address, city, zip, phone);
+function addBness(username, password, companyname, email, address, city, zip, phone) {
+    return new Promise((resolve, reject) => {
+        BModel.find({
+            username: username
+        }, (err, res) => {
+            if (err) {
+                console.log("ERROR:" + err);
+                return false;
+            } else {
+                let catalog = [];
+                let newuser = new BModel({
+                    companyname,
+                    username,
+                    password,
+                    email, address,
+                    city,
+                    zip,
+                    phone, 
+                    catalog,
+                    startdate: new Date(),
+                });
+                console.log(`New user created: ${companyname}!`);
+                newuser.save();
+                resolve(true);
+            }
+        });
     });
+    
 }
 
 function removeBness(companyname, username, password) {
@@ -71,14 +78,34 @@ function removeBness(companyname, username, password) {
         }
     });
 }
+function getBness(username, password) {
+    return new Promise((resolve, reject) => {
+        BModel.findOne({
+            username,
+            password
+        }, (err, res) => {
+            console.log(res);
+            if(err){
+                resolve(null);
+            }
+            if(res != undefined){
+                resolve(res);
+            }
+            else{
+                resolve(null);
+            } 
+        });
+    });
+}
 
-function getBness(companyname) {
+
+function getBnessByName(companyname) {
     BModel.find({
         companyname
     }, (err, res) => {
         //console.log(res);
         if (res.length != 0) {
-            return res; //how do I return bness object found?
+            return res; 
         } else {
             console.log("business not found")
             return false;
@@ -86,18 +113,6 @@ function getBness(companyname) {
     });
 }
 
-const ProductSchema = new Schema({
-    productname: String,
-    url: Srting
-});
-/*
-const CatalogSchema = new Schema({
-    products: [ProductSchema] //products is an array of ProductSchema objects
-});
-
-let CModel = mongoose.model("Catalog", CatalogSchema);
-let PModel = mongoose.model("Products", ProductSchema);
-*/
 function getCatalog(companyname) {
     BModel.find({
         companyname,
@@ -119,12 +134,6 @@ function addProduct(companyname, product) {
         //console.log(res);
         if (res.length != 0) {
             //company found
-            /*
-            let newproduct = new PModel({
-                productname,
-                url,
-            });
-            */
             BModel.updateOne({
                 companyname,
                 username
@@ -146,4 +155,13 @@ function addProduct(companyname, product) {
         console.log(`New product created: ${productname}!`);
         newproduct.save();
     });
+}
+
+module.exports = {
+    addBness,
+    getBness,
+    removeBness,
+    addProduct,
+    getCatalog,
+    // removefProduct - Need to implement
 }

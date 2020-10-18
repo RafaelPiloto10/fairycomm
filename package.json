@@ -1,23 +1,30 @@
 {
-  "name": "name-site",
+  "name": "fairycomm",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RafaelPiloto10/name-site.git"
   },
-  "author": "Rafae, Miles, Brenda, Manasa",
+  "author": "Rafael, Miles, Brenda, Manasa",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RafaelPiloto10/name-site/issues"
+    "url": "https://github.com/RafaelPiloto10/fairycomm/issues"
   },
-  "homepage": "https://github.com/RafaelPiloto10/name-site#readme",
+  "homepage": "https://github.com/RafaelPiloto10/fairycomm#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.10.9"
+    "express-session": "^1.17.1",
+    "mongoose": "^5.10.9",
+    "nodemon": "^2.0.5"
   }
 }

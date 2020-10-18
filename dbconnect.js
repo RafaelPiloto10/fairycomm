@@ -15,7 +15,7 @@ const BnessSchema = new Schema({
     industry: String,
     username: String,
     password: String,
-    catalog: [String],
+    catalog: [Schema.Types.Mixed],
     startdate: Date,
 });
 
@@ -24,8 +24,8 @@ Bness.index({
     industry: "text",
     username: "text",
     password: "text",
-    catalog: "text", //not sure if correct
-    startdate: "text",
+    //catalog: "text", //not sure if correct
+    //startdate: "text",
 });
 
 let BModel = mongoose.model("Business", BnessSchema);
@@ -90,19 +90,20 @@ const ProductSchema = new Schema({
     productname: String,
     url: Srting
 });
+/*
 const CatalogSchema = new Schema({
     products: [ProductSchema] //products is an array of ProductSchema objects
 });
 
 let CModel = mongoose.model("Catalog", CatalogSchema);
 let PModel = mongoose.model("Products", ProductSchema);
-
-function getProduct(productname) {
-    CModel.find({
-        productname,
+*/
+function getCatalog(companyname) {
+    BModel.find({
+        companyname,
     }, (err, res) => {
         if (res.length != 0) {
-            return res; //how do I return product object found?
+            return res.catalog; //how do I return product object found?
         } else {
             console.log("product not found")
             return false;
@@ -110,18 +111,32 @@ function getProduct(productname) {
     });
 }
 
-function addProduct(companyname, productname, url) {
-    BModel.find({
-        companyname
+function addProduct(companyname, product) {
+    BModel.findOne({
+        companyname,
+        username
     }, (err, res) => {
         //console.log(res);
         if (res.length != 0) {
             //company found
+            /*
             let newproduct = new PModel({
                 productname,
                 url,
             });
-            //TODO: put newproduct into catalog beloging to companyname
+            */
+            BModel.updateOne({
+                companyname,
+                username
+            }, {
+                catalog: res.catalog + [product]
+            }, (err2, res2) => {
+                if (err2 != null) {
+                    console.log(err2);
+                } else {
+                    console.log(`Successfully added product for ${companyname}!`);
+                }
+            });
         } else {
             //company not found
             console.log("company not found")

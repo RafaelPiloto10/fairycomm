@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Login V17</title>
+    <title>Register V17</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
@@ -38,42 +38,67 @@
             <div class="wrap-login100">
                 <form class="login100-form validate-form">
                     <span class="login100-form-title p-b-34">
-                        Account Login
+                        Account Registration
                     </span>
-
-                    <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" data-validate="Type user name">
-                        <input id="first-name" class="input100" type="text" name="username" placeholder="User name">
+                    <!--Business Owner Name-->
+                    <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" data-validate="Type first name">
+                        <input id="first-name" class="input100" type="text" name="first-name" placeholder="First Name">
                         <span class="focus-input100"></span>
                     </div>
+                    <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" data-validate="Type last name">
+                        <input id="last-name" class="input100" type="text" name="last-name" placeholder="Last Name">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <!--Business Name-->
+                    <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20"
+                        data-validate="Type company name">
+                        <input id="company" class="input100" type="text" name="businessname"
+                            placeholder="Business Name">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <!--Email Address-->
+                    <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20"
+                        data-validate="Type email address">
+                        <input class="input100" type="text" name="e-address" placeholder="Email Address">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <!--Address-->
+                    <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type address">
+                        <input class="input100" type="text" name="address" placeholder="Address">
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type city">
+                        <input class="input100" type="text" name="city" placeholder="City">
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" data-validate="Type zip">
+                        <input class="input100" type="text" name="zip" placeholder="Zip Code">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <!--Phone Number-->
+                    <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20"
+                        data-validate="Type phone number">
+                        <input class="input100" type="text" name="phone" placeholder="Phone Number">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <!--Create Password-->
                     <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type password">
                         <input class="input100" type="password" name="pass" placeholder="Password">
                         <span class="focus-input100"></span>
                     </div>
 
+                    <!--Register Button -->
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn btn-primary">
-                            Sign in
+                        <button type="submit" class="login100-form-btn btn-primary">
+                            Register
                         </button>
                     </div>
-
-                    <div class="w-full text-center p-t-27 p-b-239">
-                        <span class="txt1">
-                            Forgot
-                        </span>
-
-                        <a href="#" class="txt2 text-primary">
-                            User name / password?
-                        </a>
-                    </div>
-
-                    <div class="w-full text-center">
-                        <a href="#" class="txt3">
-                            Sign Up
-                        </a>
-                    </div>
                 </form>
-
-                <div class="login100-more" style="background-image: url('images/bg-01.jpg');"></div>
             </div>
         </div>
     </div>

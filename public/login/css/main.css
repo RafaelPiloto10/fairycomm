@@ -221,7 +221,7 @@ iframe {
 .login100-more {
   width: 50%;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   position: relative;
   z-index: 1;
@@ -236,7 +236,7 @@ iframe {
   height: 100%;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.3);
+
 }
 
 

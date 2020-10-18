@@ -1,0 +1,15 @@
+  {
+      "name": "fairycomm",
+      "version": "1.0",
+      "description": "Support and shop local businesses",
+      "permissions": ["activeTab"],
+      "icons": {
+          "16": "FullSizeRender.jpg"
+      },
+      "background": {
+          "scripts": ["background.js"],
+          "persistent": false
+      },
+      "browser_action": {},
+      "manifest_version": 2
+  }

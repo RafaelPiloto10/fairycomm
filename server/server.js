@@ -16,7 +16,7 @@ const API_ROUTE = process.env.API_ROUTE || "api/v1";
 
 const route = app.listen(PORT, () => {
     console.log("Server is up and running at: http://localhost:3000");
-    });
+});
 
 app.use(cors());
 app.use(express.json());
@@ -83,19 +83,19 @@ app
         if (typeof req.body.username != 'undefined' && typeof req.body.password != 'undefined') {
             // Check database here for password and username in order to properly authenticate
             api.authenticateUser(db, req.body.username, req.body.password).then(results => {
-                if(results != null){
+                if (results != null) {
                     req.session.user = "authenticated";
                     req.session.username = req.body.username;
                     req.session.companyname = results.companyname;
                     res.status(200).redirect('/dashboard');
                 } else {
                     res.status(200).json({
-                    message: "There was an issue with the request",
-                    error: "Password or Username are incorrect"
+                        message: "There was an issue with the request",
+                        error: "Password or Username are incorrect"
                     });
                 }
-            }).catch((e)=> console.log(e));
-            
+            }).catch((e) => console.log(e));
+
         } else {
             res.status(200).json({
                 message: "There was an issue with the request",
@@ -104,7 +104,7 @@ app
         }
     });
 
-    // route for dashboard 
+// route for dashboard 
 app.get("/home", (req, res) => {
     if (req.session.user == "authenticated" && req.cookies.user_sid) {
         res.status(200).redirect('/dashboard');
@@ -138,16 +138,18 @@ app
         let city = req.body.city;
         let zip = req.body.zip;
         let phone = req.body.phone;
-        if(api.registerBusiness(db, username, password, companyname, email, address, city, zip, phone)){
+        if (api.registerBusiness(db, username, password, companyname, email, address, city, zip, phone)) {
             res.status(200).redirect("/login");
         } else {
             res.status(401).redirect("/register");
         }
-});
+    });
 
 // ---------------------- API PRODUCT ROUTES -------------
 app.get(`${API_ROUTE}/get-products`, (req, res, next) => {
-
+    res.send({
+        "products": ["one", "two", "three"]
+    });
 });
 
 app.post(`${API_ROUTE}/add-product`, (req, res, next) => {
@@ -163,10 +165,6 @@ app.get(`${API_ROUTE}/get-business`, (req, res, next) => {
 
 });
 
-app.post(`${API_ROUTE}/add-business`, (req, res, next) => {
-
-});
-
 app.post(`${API_ROUTE}/remove-business`, (req, res, next) => {
 
 });
@@ -177,4 +175,3 @@ app.get("*", (req, res, next) => {
         message: "Page not found"
     });
 });
-

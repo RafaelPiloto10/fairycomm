@@ -212,8 +212,9 @@ iframe {
   display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
-  align-items: stretch;
-  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 
 }
 
@@ -253,7 +254,7 @@ iframe {
   display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
-  padding: 303px 65px 40px 65px;
+  padding: 40px 65px 40px 65px;
 }
 
 .login100-form-title {

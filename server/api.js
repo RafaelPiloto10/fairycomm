@@ -1,0 +1,2 @@
+function registerBusiness(db, company){
+}

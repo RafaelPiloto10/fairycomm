@@ -1,7 +1,8 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:<${process.env.DB_PASSWORD}>@herd-it-here-first.23sgz.azure.mongodb.net/<dbname>?retryWrites=true&w=majority`;
-
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@herd-it-here-first.23sgz.azure.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+const Schema = mongoose.Schema;
 mongoose.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -19,13 +20,11 @@ const BnessSchema = new Schema({
     startdate: Date,
 });
 
-Bness.index({
+BnessSchema.index({
     companyname: "text",
     industry: "text",
     username: "text",
     password: "text",
-    //catalog: "text", //not sure if correct
-    //startdate: "text",
 });
 
 let BModel = mongoose.model("Business", BnessSchema);
@@ -78,7 +77,7 @@ function getBness(companyname) {
     }, (err, res) => {
         //console.log(res);
         if (res.length != 0) {
-            return res; //how do I return bness object found?
+            return res; 
         } else {
             console.log("business not found")
             return false;
@@ -86,18 +85,6 @@ function getBness(companyname) {
     });
 }
 
-const ProductSchema = new Schema({
-    productname: String,
-    url: Srting
-});
-/*
-const CatalogSchema = new Schema({
-    products: [ProductSchema] //products is an array of ProductSchema objects
-});
-
-let CModel = mongoose.model("Catalog", CatalogSchema);
-let PModel = mongoose.model("Products", ProductSchema);
-*/
 function getCatalog(companyname) {
     BModel.find({
         companyname,
@@ -119,12 +106,6 @@ function addProduct(companyname, product) {
         //console.log(res);
         if (res.length != 0) {
             //company found
-            /*
-            let newproduct = new PModel({
-                productname,
-                url,
-            });
-            */
             BModel.updateOne({
                 companyname,
                 username
@@ -146,4 +127,13 @@ function addProduct(companyname, product) {
         console.log(`New product created: ${productname}!`);
         newproduct.save();
     });
+}
+
+module.exports = {
+    addBness,
+    getBness,
+    removeBness,
+    addProduct,
+    getCatalog,
+    // removefProduct - Need to implement
 }

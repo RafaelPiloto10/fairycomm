@@ -1,11 +1,14 @@
 require('dotenv').config();
 const express = require('express');
-const path = requier('path');
+const path = require('path');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const cookieparser = require('cookie-parser');
 const session = require('express-session');
 const app = express();
+// Custom API Scripts
+const api = require('./api');
+const db = require('./db');
 
 const PORT = process.env.PORT || 3000;
 const API_ROUTE = process.env.API_ROUTE || "api/v1";
@@ -57,9 +60,7 @@ var sessionChecker = (req, res, next) => {
     }
 };
 
-
 // ------------------ LOGIN -------------------------
-
 // route to check if user is authenticated
 app.get("/auth", (req, res, next) => {
     if (req.session.user == "authenticated") {
@@ -111,6 +112,46 @@ app.get('/logout', (req, res, next) => {
     }
 });
 
+
+// ------------------ REGISTER -------------------------
+app
+.get("/register", (req, res, next) => res.status(200).send("/register"))
+.post("/register", (req, res, next) => {
+    // TODO: HANDLE REGISTER
+    let username = req.body.username;
+    let password = req.body.password;
+    let business = req.body.business;
+    let address = req.body.address;
+    let city = req.body.city;
+    let zip_code = req.body.zip;
+});
+
+// ---------------------- API PRODUCT ROUTES -------------
+app.get(`${API_ROUTE}/get-products`, (req, res, next) => {
+
+});
+
+app.post(`${API_ROUTE}/add-product`, (req, res, next) => {
+
+});
+
+app.post(`${API_ROUTE}/remove-product`, (req, res, next) => {
+
+});
+
+// ---------------------- API BUSINESS ROUTES -------------
+app.get(`${API_ROUTE}/get-business`, (req, res, next) => {
+
+});
+
+app.post(`${API_ROUTE}/add-business`, (req, res, next) => {
+
+});
+
+app.post(`${API_ROUTE}/remove-business`, (req, res, next) => {
+
+});
+
 // route for 404 error
 app.get("*", (req, res, next) => {
     res.status(404).json({
@@ -118,42 +159,3 @@ app.get("*", (req, res, next) => {
     });
 });
 
-
-// ------------------ REGISTER -------------------------
-app
-.get("/register", (req, res, next) => res.status(200).send("/register"))
-.post("/register", (req, res) => {
-    // TODO: HANDLE REGISTER
-});
-
-// ------------------ DASHBOARD -------------------------
-app
-.get("/dashboard", (req, res, next) => {
-    // TODO: HANDLE DASHBOARD SITE
-});
-
-// ---------------------- API PRODUCT ROUTES -------------
-app.get(`${api_route}/get-products`, (req, res, next) => {
-
-});
-
-app.post(`${api_route}/add-product`, (req, res, next) => {
-
-});
-
-app.post(`${api_route}/remove-product`, (req, res, next) => {
-
-});
-
-// ---------------------- API BUSINESS ROUTES -------------
-app.get(`${api_route}/get-business`, (req, res, next) => {
-
-});
-
-app.post(`${api_route}/add-business`, (req, res, next) => {
-
-});
-
-app.post(`${api_route}/remove-business`, (req, res, next) => {
-
-});

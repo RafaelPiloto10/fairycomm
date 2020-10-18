@@ -10,17 +10,78 @@ mongoose.connect(uri, {
         console.log(err);
     });
 
-const User = new Schema({
-    name: String,
+const Bness = new Schema({
+    companyname: String,
+    industry: String,
     username: String,
-    telegram_id: Number,
-    date: Date
+    password: String,
+    catalog: [String],
+    startdate: Date,
 });
 
-User.index({
-    name: "text",
+Bness.index({
+    companyname: "text",
+    industry: "text",
     username: "text",
-    telegram_id: "text"
+    password: "text",
+    catalog: "text", //not sure if correct
+    startdate: "text",
 });
 
-let UserModel = mongoose.model("User", User);
+let BModel = mongoose.model("Business", Bness);
+
+
+function addBness(companyname, industry, username, password, catalog) {
+    BModel.find({
+        username: username
+    }, (err, res) => {
+        console.log(res);
+        if (res.length != 0) {
+            return false;
+        } else {
+            let user = new BModel({
+                companyname,
+                industry,
+                username,
+                password,
+                catalog,
+                startdate: new Date(),
+            });
+            console.log(`New user created: ${companyname}!`);
+            user.save();
+        }
+    });
+}
+
+function removeBness(companyname, username, password) {
+    BModel.findOneAndDelete({
+        companyname, //same as companyname: companyname
+        username,
+        password,
+    }, (err, res) => {
+        if (err) {
+            console.log(err); //err is the actual error
+            return false;
+        } else {
+            if (res) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+}
+
+function getBness() {
+    BModel.find({
+        companyname
+    }, (err, res) => {
+        //console.log(res);
+        if (res.length != 0) {
+            return true;
+        } else {
+            console.log("business not found")
+            return false;
+        }
+    });
+}

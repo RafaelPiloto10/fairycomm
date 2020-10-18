@@ -157,15 +157,13 @@ iframe {
 
   font-size: 13px;
   line-height: 1.4;
-  color: #00ad5f;
+  color: #007bff;
 }
 
 .txt3 {
 
   font-size: 15px;
   line-height: 1.4;
-  color: #00ad5f;
-  text-transform: uppercase;
 }
 
 /*==================================================================
@@ -262,7 +260,6 @@ iframe {
   font-size: 20px;
   color: #555555;
   line-height: 1.2;
-  text-transform: uppercase;
   letter-spacing: 2px;
   text-align: center;
 

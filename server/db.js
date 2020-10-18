@@ -1,9 +1,9 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@herd-it-here-first.23sgz.azure.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+const uri2 = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.ijjzb.azure.mongodb.net/${process.env.DB_NAME}>?retryWrites=true&w=majority`
 const Schema = mongoose.Schema;
-mongoose.connect(uri, {
+mongoose.connect(uri2, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(console.log("Connected to database"))
@@ -11,45 +11,53 @@ mongoose.connect(uri, {
         console.log(err);
     });
 
+
 const BnessSchema = new Schema({
     companyname: String,
-    industry: String,
     username: String,
     password: String,
+    email: String,
+    address: String,
+    city: String,
+    zip: String,
+    phone: String,
     catalog: [Schema.Types.Mixed],
     startdate: Date,
-});
-
-BnessSchema.index({
-    companyname: "text",
-    industry: "text",
-    username: "text",
-    password: "text",
 });
 
 let BModel = mongoose.model("Business", BnessSchema);
 
 
-function addBness(companyname, industry, username, password, catalog) {
-    BModel.find({
-        username: username
-    }, (err, res) => {
-        console.log(res);
-        if (res.length != 0) {
-            return false;
-        } else {
-            let newuser = new BModel({
-                companyname,
-                industry,
-                username,
-                password,
-                catalog,
-                startdate: new Date(),
-            });
-            console.log(`New user created: ${companyname}!`);
-            newuser.save();
-        }
+
+//  api.registerBusiness(username, password, business, email, address, city, zip, phone);
+function addBness(username, password, companyname, email, address, city, zip, phone) {
+    return new Promise((resolve, reject) => {
+        BModel.find({
+            username: username
+        }, (err, res) => {
+            if (err) {
+                console.log("ERROR:" + err);
+                return false;
+            } else {
+                let catalog = [];
+                let newuser = new BModel({
+                    companyname,
+                    username,
+                    password,
+                    email, address,
+                    city,
+                    zip,
+                    phone, 
+                    catalog,
+                    startdate: new Date(),
+                });
+                console.log(`New user created: ${companyname}!`);
+                newuser.save();
+                resolve(true);
+            }
+        });
     });
+    
 }
 
 function removeBness(companyname, username, password) {
@@ -70,8 +78,28 @@ function removeBness(companyname, username, password) {
         }
     });
 }
+function getBness(username, password) {
+    return new Promise((resolve, reject) => {
+        BModel.findOne({
+            username,
+            password
+        }, (err, res) => {
+            console.log(res);
+            if(err){
+                resolve(null);
+            }
+            if(res != undefined){
+                resolve(res);
+            }
+            else{
+                resolve(null);
+            } 
+        });
+    });
+}
 
-function getBness(companyname) {
+
+function getBnessByName(companyname) {
     BModel.find({
         companyname
     }, (err, res) => {

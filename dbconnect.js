@@ -10,7 +10,7 @@ mongoose.connect(uri, {
         console.log(err);
     });
 
-const Bness = new Schema({
+const BnessSchema = new Schema({
     companyname: String,
     industry: String,
     username: String,
@@ -28,7 +28,7 @@ Bness.index({
     startdate: "text",
 });
 
-let BModel = mongoose.model("Business", Bness);
+let BModel = mongoose.model("Business", BnessSchema);
 
 
 function addBness(companyname, industry, username, password, catalog) {
@@ -39,7 +39,7 @@ function addBness(companyname, industry, username, password, catalog) {
         if (res.length != 0) {
             return false;
         } else {
-            let user = new BModel({
+            let newuser = new BModel({
                 companyname,
                 industry,
                 username,
@@ -48,7 +48,7 @@ function addBness(companyname, industry, username, password, catalog) {
                 startdate: new Date(),
             });
             console.log(`New user created: ${companyname}!`);
-            user.save();
+            newuser.save();
         }
     });
 }
@@ -72,16 +72,63 @@ function removeBness(companyname, username, password) {
     });
 }
 
-function getBness() {
+function getBness(companyname) {
     BModel.find({
         companyname
     }, (err, res) => {
         //console.log(res);
         if (res.length != 0) {
-            return true;
+            return res; //how do I return bness object found?
         } else {
             console.log("business not found")
             return false;
         }
+    });
+}
+
+const ProductSchema = new Schema({
+    productname: String,
+    url: Srting
+});
+const CatalogSchema = new Schema({
+    products: [ProductSchema] //products is an array of ProductSchema objects
+});
+
+let CModel = mongoose.model("Catalog", CatalogSchema);
+let PModel = mongoose.model("Products", ProductSchema);
+
+function getProduct(productname) {
+    CModel.find({
+        productname,
+    }, (err, res) => {
+        if (res.length != 0) {
+            return res; //how do I return product object found?
+        } else {
+            console.log("product not found")
+            return false;
+        }
+    });
+}
+
+function addProduct(companyname, productname, url) {
+    BModel.find({
+        companyname
+    }, (err, res) => {
+        //console.log(res);
+        if (res.length != 0) {
+            //company found
+            let newproduct = new PModel({
+                productname,
+                url,
+            });
+            //TODO: put newproduct into catalog beloging to companyname
+        } else {
+            //company not found
+            console.log("company not found")
+            return false;
+
+        }
+        console.log(`New product created: ${productname}!`);
+        newproduct.save();
     });
 }
